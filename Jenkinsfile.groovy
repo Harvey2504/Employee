@@ -108,7 +108,7 @@ pipeline{
             }
         }
 
-        stage('aws deployment'){
+        stage('ec2 deployment'){
             steps{
                 script{
                     last_started=env.STAGE_NAME
@@ -118,6 +118,17 @@ pipeline{
         }
             }
         } 
+        stage('s3 deployment'){
+            steps{
+                script{
+                    last_started=env.STAGE_NAME
+                }
+                withAWS(region:'us-east-2',credentials:'c5f256c5-2e01-40ad-9e25-7884b9407c42') {
+                    s3Upload(file:'artifacts/Employee-0.0.1-SNAPSHOT.jar', bucket:'atibbucket', path:'artifacts/')
+            }
+
+            }
+        }
 
     }
         post{
