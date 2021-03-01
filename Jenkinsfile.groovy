@@ -51,14 +51,6 @@ pipeline{
                 sh 'mvn package'
             }
         }
-        stage('maven-install'){
-            steps{
-                script{
-                    last_started=env.STAGE_NAME
-                }
-                sh 'mvn install'
-            }
-        }
         stage('sonar-analysis'){
             steps{
                 script{
@@ -74,7 +66,7 @@ pipeline{
                 script{
                     last_started=env.STAGE_NAME
                 }
-              timeout(time: 1, unit: 'HOURS') {
+              timeout(time: 5, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
               }
             }
